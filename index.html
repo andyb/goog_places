@@ -22,7 +22,8 @@
 
   function doSearch(name) {
       var request = {
-      query: name
+      query: name,
+      types: ['locality','country','political']
     };
 
     var service = new google.maps.places.PlacesService(map);
@@ -30,24 +31,27 @@
   }
 
   function search_callback(results, status) {
+    $("#list_output").empty()
     if (status == google.maps.places.PlacesServiceStatus.OK) {
-        $("#list_output").empty()
         var service = new google.maps.places.PlacesService(map);
         for (i in results) {
           var request = {placeId: results[i].place_id }
           service.getDetails(request,details_callback)
         }
     }
+    else if (status = google.maps.places.PlacesServiceStatus.ZERO_RESULTS) {
+      $("#list_output").append("<li>No results found</li>")
+    }
   }
 
   function details_callback(results,status) {
     if (status == google.maps.places.PlacesServiceStatus.OK) {
-        $("#list_output").append("<li>" + results.name + ":" + results.formatted_address + "</li>")
+        $("#list_output").append("<li>" + results.formatted_address + "</li>")
     }
   }
 
   $( document ).ready(function() {
-      $("#test_btn").click(function() {
+      $("#place_txt").keyup(function() {
           doSearch(document.getElementById("place_txt").value)
       })
   });
@@ -60,7 +64,6 @@
 <body>
   <div id="map-canvas" style="display:none;"></div>
   <input type="textbox" id="place_txt" />
-  <input type="button" id="test_btn" />
   <ul id="list_output">
   </ul>
 </body>
