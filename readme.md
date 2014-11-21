@@ -12,4 +12,8 @@ From there `python -m SimpleHTTPServer`
 
 Open your browser to `http://localhost:8000/index.html`
 
+and
+
+`http://localhost:8000/auto_com.html`
+
 Experience the magic...
